@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getProducts } from '../../redux/actions/productAction';
 import ProductItem from '../components/ProductItem';
-import Loading from '../components/Loading';
+import Spinner from '../components/common/Spinner';
+
 
 class Products extends Component {
   constructor(props){
@@ -18,14 +19,14 @@ class Products extends Component {
 
 
   render() {
-    const {products} =this.props.products
+    const {products, loading} =this.props.products
     let content
-          if (products){
+          if (products !== null || !loading){
           content =  products.map(product => {return  <ProductItem key={product._id} product={product}/>})
           }
           else 
-          content = undefined
-    return content
+          content = <Spinner/>
+    return (  <div className="container"><div className="row">{content}</div> </div>)
     
   }
 }

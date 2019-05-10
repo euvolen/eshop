@@ -4,7 +4,7 @@ import { SET_CURRENT_USER } from '../actions/types';
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
 };
 
 export default function(state = initialState, action) {

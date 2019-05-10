@@ -1,6 +1,6 @@
 import isEmpty from '../../utils/is-empty';
 
-import { GET_PRODUCTS } from '../actions/types';
+import { ADD_TO_CART, REMOVE_FROM_CART } from '../actions/types';
 
 const initialState = {
  cart:[]
@@ -8,10 +8,15 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case GET_PRODUCTS:
+    case ADD_TO_CART:
       return {
         ...state,
-        cart: action.payload
+        cart: [action.payload, ...state.cart]
+      };
+      case REMOVE_FROM_CART:
+      return {
+        ...state,
+        cart: state.cart.filter(product => product.id !==action.payload)
       };
     default:
       return state;

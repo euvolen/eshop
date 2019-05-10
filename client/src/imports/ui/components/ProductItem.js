@@ -12,9 +12,10 @@ import PropTypes from 'prop-types'
       const {product} = this.props
       
     return (
-      <div>
+      <div className="col-md-3">
        <Link to={`/products/${product._id}`}><h1>{product.name}</h1></Link>
-
+        <img src={product.img} style={{ width: '200px', margin: 'auto', display: 'block' }}/>
+      
       </div>
     )
   }
