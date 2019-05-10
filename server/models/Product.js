@@ -15,7 +15,11 @@ const ProductSchema = new Schema({
         type:Number,
         required: true
     },
-    nett_price:{
+    net_price:{
+        type:Number,
+        required: true
+    },
+    initial_price:{
         type:Number,
         required: true
     },
