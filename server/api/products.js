@@ -24,6 +24,7 @@ router.get('/all', (req, res) => {
                 for (const i in data) {
                     publicData.push({
                         _id: data[i]._id,
+                        name: data[i].name,
                         description: data[i].description,
                         price: data[i].gross_price,
                         img: data[i].img,
@@ -37,6 +38,23 @@ router.get('/all', (req, res) => {
             err => res.status(404).json(err)
         )
 });
+// @route    GET api/products/:Id
+// @desc     Return a products by its ID
+// @access   public
+router.get('/:id', (req, res) => {
+
+            Product.findById(req.params.id).then(
+          
+                product => {
+                    
+                    res.status(200).json(product)
+                }
+            ).catch(
+                err => res.status(404).json({err:`There is no such product with this id`})
+            )
+       
+    })
+
 
 // @route    GET api/products/all/:adminId
 // @desc     Return all products with additional data for admins

@@ -10,10 +10,11 @@ import PropTypes from 'prop-types'
 
   render() {
       const {product} = this.props
+      
     return (
       <div>
-       <Link to={`/products/${product.id}`}><h1>{product.name}</h1></Link>
-       <p>{product.id}</p>
+       <Link to={`/products/${product._id}`}><h1>{product.name}</h1></Link>
+
       </div>
     )
   }
