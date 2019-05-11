@@ -17,6 +17,7 @@ import Product from './imports/ui/pages/Product';
 import Admin from './imports/ui/pages/Admin';
 import Settings from './imports/ui/pages/Settings';
 import NotFound from './imports/ui/pages/NotFound';
+import { getUserCart } from './imports/redux/actions/productAction';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -26,6 +27,7 @@ if (localStorage.jwtToken) {
   const decoded = jwt_decode(localStorage.jwtToken);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
+  store.dispatch(getUserCart())
 
   // Check for expired token
   const currentTime = Date.now() / 1000;

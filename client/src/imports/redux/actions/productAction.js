@@ -6,7 +6,8 @@ import {
   GET_PRODUCT,
   ADD_TO_CART,
   REMOVE_FROM_CART,
-  UPDATE_CART
+  UPDATE_CART,
+  GET_CART
 } from './types';
 
 // Register User
@@ -40,7 +41,21 @@ export const getProduct = (id) => dispatch => {
       })
     );
 };
-
+export const getUserCart = () => dispatch => {
+  dispatch(setLoading())
+  axios
+    .get(`/api/actions/`)
+    .then(res => dispatch({
+      type: GET_CART,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response
+      })
+    );
+};
 export const addToCart = (product,userId) => dispatch => {
   if(userId){
     axios
@@ -52,7 +67,7 @@ export const addToCart = (product,userId) => dispatch => {
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
-        payload: err.response.data
+        payload: err
       })
     )
   }

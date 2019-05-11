@@ -2,16 +2,16 @@ import React, { Component } from 'react'
 import {connect} from  "react-redux"
 import CartItem from '../components/CartItem';
 import PropTypes from 'prop-types';
+import Spinner from '../components/common/Spinner';
  class Cart extends Component {
   render() {
-    const {cart} = this.props.products
-    console.log(cart);
+    const {cart} = this.props.products.userCart
+    let content = <Spinner/>
+    if(cart){
+      content =  cart.map(item => {return <CartItem key={item._id} item={item}/>})
+    }
     
-    return (
-      <div>
-        {cart.map(item => {return <CartItem key={item.id} item={item}/>})}
-      </div>
-    )
+    return content
   }
 }
 

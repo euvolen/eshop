@@ -17,35 +17,19 @@ class Product extends Component {
 
   //Adding to cart
   addToCart(){
-    const {user} = this.props.auth
-      const {cart, product} = this.props.products
+      const {user} = this.props.auth
+      const {userCart, product} = this.props.products
       //Data formating
       let data ={
-        id:product._id,
+        productId:product._id,
         name:product.name,
         price:product.price,
         quantity:1
       }
-      let updated =[]
-    
-        if(cart.filter(item =>item.id === data.id).length>0){
-          for(const i in cart){
-            if(cart[i].id === data.id){
-              updated.push({
-                id:cart[i].id,
-                name:cart[i].name,
-                price:cart[i].price,
-                quantity:cart[i].quantity+1
-              })
-            } else{
-              updated.push(cart[i])
-            }
-          }
-          this.props.updateCart(updated, user ? user.id : undefined)}else {
+
+        if(userCart.cart.filter(item =>item.productId === data.productId).length===0){
           this.props.addToCart(data, user ? user.id : undefined)
         }
-  
-     
       
   }
 
