@@ -1,16 +1,16 @@
-const express = require('express');
-const router = express.Router();
-const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const keys = require('../configs/keys');
-const passport = require('passport');
+const express = require('express')
+const router = express.Router()
+const gravatar = require('gravatar')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const keys = require('../configs/keys')
+const passport = require('passport')
 
 // Load input validation
-const validateRegisterInput = require('../validation/register');
-const validateLoginInput = require('../validation/login');
+const validateRegisterInput = require('../validation/register')
+const validateLoginInput = require('../validation/login')
 //Load User model
-const User = require('../models/User'); 
+const User = require('../models/User')
 
 
 // @route    GET api/users/test
@@ -61,7 +61,7 @@ router.post('/register', (req, res)=>{
         }
     })
  
-} );
+} )
 
 // @route    GET api/users/login
 // @desc     Login user / Returning JWT token
@@ -107,9 +107,9 @@ router.post('/login', (req,res)=>{
                 errors.password = 'Password incorrect!'
                 return res.status(400).json(errors);
             }
-        });
-    });
-});
+        })
+    })
+})
 
 // @route    GET api/users/current
 // @desc     Return current user
@@ -125,7 +125,17 @@ router.get('/current', passport.authenticate('jwt', {session:false}),
         });
 }
 );
-
+// @route   DELETE api/users
+// @desc    Delete user
+// @access  Private
+router.delete( '/',passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+    
+        User.findOneAndRemove({ _id: req.user.id }).then(() =>
+          res.json({ success: true })
+        )
+    }
+  )
 
 
 module.exports = router;

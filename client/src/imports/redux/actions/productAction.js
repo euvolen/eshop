@@ -1,35 +1,100 @@
 import axios from 'axios';
-import { GET_ERRORS, GET_PRODUCTS, LOADING, GET_PRODUCT } from './types';
+import {
+  GET_ERRORS,
+  GET_PRODUCTS,
+  LOADING,
+  GET_PRODUCT,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  UPDATE_CART
+} from './types';
 
 // Register User
 export const getProducts = () => dispatch => {
   dispatch(setLoading())
+  axios
+    .get('/api/products/all')
+    .then(res => dispatch({
+      type: GET_PRODUCTS,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+export const getProduct = (id) => dispatch => {
+  dispatch(setLoading())
+  axios
+    .get(`/api/products/${id}`)
+    .then(res => dispatch({
+      type: GET_PRODUCT,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+
+export const addToCart = (product,userId) => dispatch => {
+  if(userId){
     axios
-      .get('/api/products/all')
-      .then(res => dispatch({
-        type: GET_PRODUCTS,
-        payload: res.data
-      }))
-      .catch(err =>
-        dispatch({
-          type: GET_ERRORS,
-          payload: err.response.data
-        })
-      );
-  };
-  export const getProduct = (id) => dispatch => {
-    dispatch(setLoading())
-      axios
-        .get(`/api/products/${id}`)
-        .then(res => dispatch({
-          type: GET_PRODUCT,
-          payload: res.data
-        }))
-        .catch(err =>
-          dispatch({
-            type: GET_ERRORS,
-            payload: err.response.data
-          })
-        );
-    };
-  export const setLoading = () => {return {type:LOADING}}
+    .post(`/api/actions/${userId}`,product)
+    .then(res => dispatch({
+      type: ADD_TO_CART,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    )
+  }
+  else{
+    dispatch({
+      type: ADD_TO_CART,
+      payload: product
+    })
+  }
+};
+
+export const updateCart = (cart, userId) => dispatch => {
+  if(userId){
+    axios
+    .post(`/api/actions/${userId}`,{cart})
+    .then(res => dispatch({
+      type: UPDATE_CART,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+    
+  }else {
+    dispatch({
+      type: UPDATE_CART,
+      payload: cart
+    })
+  }
+ 
+};
+export const removeFromCart = (id) => dispatch => {
+  dispatch({
+    type: REMOVE_FROM_CART,
+    payload: id
+  })
+};
+export const setLoading = () => {
+  return {
+    type: LOADING
+  }
+}

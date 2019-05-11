@@ -7,15 +7,23 @@ const TransactionSchema = new Schema({
         type: Schema.Types.ObjectId,
         refs: 'users'
     },
-    goods: [{
-            product: {
-                type: Schema.Types.ObjectId,
-                refs: 'product'
+    cart: [{
+            productId:{
+                type: String,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
             },
             quantity: {
                 type: Number,
                 required: true
             },
+            price:{
+                type:Number,
+                required:true
+            }
         },
     ],
     summ: {
@@ -24,7 +32,11 @@ const TransactionSchema = new Schema({
     },
     conditions: {
         type: String,
-        required: true
+    },
+    isCompleted:{
+        type:Boolean,
+        required:true,
+        default:false
     },
     date: {
         type: Date,
@@ -32,4 +44,4 @@ const TransactionSchema = new Schema({
     },
 });
 
-module.exports = User = mongoose.model('transactions', TransactionSchema);
+module.exports = Transaction = mongoose.model('transactions', TransactionSchema);

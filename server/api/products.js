@@ -6,13 +6,6 @@ const passport = require('passport')
 const validateProductInput = require('../validation/product')
 
 
-// @route    GET api/products/test
-// @desc     Tests products route
-// @access   Public
-router.get('/test', (req, res) => res.json({
-    msg: "Products works"
-}));
-
 // @route    GET api/products/all
 // @desc     Return all products for users
 // @access   Public
@@ -46,9 +39,17 @@ router.get('/:id', (req, res) => {
             Product.findById(req.params.id).then(
           
                 product => {
-                    
-                    res.status(200).json(product)
+                    let publicProduct={}
+                    publicProduct._id = product._id,
+                    publicProduct.name= product.name,
+                    publicProduct.description= product.description,
+                    publicProduct.price= product.gross_price,
+                    publicProduct.img= product.img,
+                    publicProduct.quantity= product.quantity,
+                    res.status(200).json(publicProduct)
                 }
+                    
+                
             ).catch(
                 err => res.status(404).json({err:`There is no such product with this id`})
             )
@@ -159,16 +160,22 @@ router.post('/product/:id/:productId', passport.authenticate('jwt', {
                         err: `Product with id ${req.params.productId} doesn't exists`
                     })
                 } else {
-                   
-                        product.name= req.body.name,
-                        product.description= req.body.description,
-                        product.gross_price= req.body.gross_price,
-                        product.net_price= req.body.net_price,
-                        product.initial_price= req.body.initial_price,
-                        product.quantity= req.body.quantity,
-                        product.img= req.body.img
+                   const productFields = {}
+                        productFields.name= req.body.name,
+                        productFields.description= req.body.description,
+                        productFields.gross_price= req.body.gross_price,
+                        productFields.net_price= req.body.net_price,
+                        productFields.initial_price= req.body.initial_price,
+                        productFields.quantity= req.body.quantity,
+                        productFields.img= req.body.img
                     
-                    product.save().then(product=>res.json(product))
+                    Product.findByIdAndUpdate({
+                        _id:req.params.productId
+                    },{
+                        $set:productFields
+                    },{
+                        new:true
+                    }).then(product=>res.json(product))
                     .catch(err=>res.json({err}))
                 }
 

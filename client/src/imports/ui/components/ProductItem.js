@@ -3,10 +3,7 @@ import {Link} from 'react-router-dom'
 import PropTypes from 'prop-types'
 
  class ProductItem extends Component {
- constructor(props){
-     super(props)
 
- }
 
   render() {
       const {product} = this.props
