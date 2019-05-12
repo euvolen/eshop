@@ -5,9 +5,12 @@ import {
   LOADING,
   GET_PRODUCT,
   ADD_TO_CART,
+  ADD_TO_USERCART,
   REMOVE_FROM_CART,
   UPDATE_CART,
-  GET_CART
+  GET_USERCART,
+  CLEAR_USERCART,
+  CLEAR_CART
 } from './types';
 
 // Register User
@@ -46,7 +49,7 @@ export const getUserCart = () => dispatch => {
   axios
     .get(`/api/actions/`)
     .then(res => dispatch({
-      type: GET_CART,
+      type: GET_USERCART,
       payload: res.data
     }))
     .catch(err =>
@@ -56,12 +59,12 @@ export const getUserCart = () => dispatch => {
       })
     );
 };
-export const addToCart = (product,userId) => dispatch => {
-  if(userId){
+export const addToUserCart = (product,userId) => dispatch => {
+ 
     axios
     .post(`/api/actions/${userId}`,product)
     .then(res => dispatch({
-      type: ADD_TO_CART,
+      type: ADD_TO_USERCART,
       payload: res.data
     }))
     .catch(err =>
@@ -70,14 +73,15 @@ export const addToCart = (product,userId) => dispatch => {
         payload: err
       })
     )
-  }
-  else{
-    dispatch({
-      type: ADD_TO_CART,
-      payload: product
-    })
-  }
+  
+ 
 };
+export const addToCart = (product)=> dispatch =>{
+  dispatch({
+    type: ADD_TO_CART,
+    payload: product
+  })
+}
 
 export const updateCart = (cart, userId) => dispatch => {
   if(userId){
@@ -102,10 +106,14 @@ export const updateCart = (cart, userId) => dispatch => {
   }
  
 };
-export const removeFromCart = (id) => dispatch => {
+export const clearUserCart = () => dispatch => {
   dispatch({
-    type: REMOVE_FROM_CART,
-    payload: id
+    type: CLEAR_USERCART
+  })
+};
+export const clearCart = () => dispatch => {
+  dispatch({
+    type: CLEAR_CART
   })
 };
 export const setLoading = () => {

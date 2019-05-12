@@ -17,8 +17,6 @@ router.get('/test', (req, res) => res.json({
 router.get('/',passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
-
-    console.log(req.user);
     
     Transaction.find({user:req.user._id, isCompleted:false}).then(data=>{
 

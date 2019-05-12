@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getProduct, addToCart, updateCart } from '../../redux/actions/productAction';
+import { getProduct, addToCart, addToUserCart } from '../../redux/actions/productAction';
 
 
 
@@ -18,7 +18,7 @@ class Product extends Component {
   //Adding to cart
   addToCart(){
       const {user} = this.props.auth
-      const {userCart, product} = this.props.products
+      const {userCart, cart, product} = this.props.products
       //Data formating
       let data ={
         productId:product._id,
@@ -26,9 +26,13 @@ class Product extends Component {
         price:product.price,
         quantity:1
       }
-
-        if(userCart.cart.filter(item =>item.productId === data.productId).length===0){
-          this.props.addToCart(data, user ? user.id : undefined)
+        if(user.id){
+          if(userCart.cart.filter(item =>item.productId === data.productId).length===0){
+            this.props.addToUserCart(data, user.id)
+          }
+        }else if (cart.filter(item =>item.productId === data.productId).length===0){
+          cart.push(data)
+          this.props.addToCart(cart)
         }
       
   }
@@ -50,7 +54,7 @@ class Product extends Component {
 Product.propTypes = {
   getProduct: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
-  updateCart: PropTypes.func.isRequired,
+  addToUserCart: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   products: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
@@ -61,4 +65,4 @@ const mapStateToProps = state => ({
   products: state.products,
   errors: state.errors
 });
-export default connect(mapStateToProps,{getProduct, addToCart, updateCart})(Product)
+export default connect(mapStateToProps,{getProduct, addToCart, addToUserCart})(Product)

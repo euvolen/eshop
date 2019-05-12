@@ -5,9 +5,12 @@ import {
   LOADING,
   GET_PRODUCT,
   ADD_TO_CART,
-  REMOVE_FROM_CART,
+  ADD_TO_USERCART,
   UPDATE_CART,
-  GET_CART
+  GET_CART,
+  GET_USERCART,
+  CLEAR_USERCART,
+  CLEAR_CART
 } from '../actions/types';
 
 const initialState = {
@@ -32,7 +35,7 @@ export default function (state = initialState, action) {
           product: action.payload,
             loading: false
         }
-        case GET_CART:
+        case GET_USERCART:
         return {
           ...state,
           userCart: action.payload,
@@ -41,9 +44,23 @@ export default function (state = initialState, action) {
         case ADD_TO_CART:
           return {
             ...state,
+            cart:action.payload
+          }
+          case ADD_TO_USERCART:
+          return {
+            ...state,
             userCart:action.payload
           }
-
+          case CLEAR_USERCART:
+          return {
+            ...state,
+            userCart:{cart:[]}
+          }
+          case CLEAR_CART:
+          return {
+            ...state,
+            cart:[]
+          }
               case LOADING:
                 return {
                   ...state,
