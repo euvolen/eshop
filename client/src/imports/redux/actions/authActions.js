@@ -62,3 +62,27 @@ export const logoutUser = () => dispatch => {
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setCurrentUser({}));
 };
+
+
+// Delete user
+export const deleteUser = () => dispatch => {
+
+  axios.delete('/api/users').then(res =>{
+
+    if(res.data.success){
+    // Remove token from localStorage
+    localStorage.removeItem('jwtToken');
+    // Remove auth header for future requests
+    setAuthToken(false);
+    dispatch(clearUserCart())
+    // Set current user to {} which will set isAuthenticated to false
+    dispatch(setCurrentUser({}));
+
+    }
+
+  }).catch(err => dispatch({
+    type: GET_ERRORS,
+    payload: err.response.data
+  }))
+
+};

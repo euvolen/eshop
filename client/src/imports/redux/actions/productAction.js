@@ -10,7 +10,10 @@ import {
   UPDATE_CART,
   GET_USERCART,
   CLEAR_USERCART,
-  CLEAR_CART
+  CLEAR_CART,
+  CHANGE_CART,
+  CHANGE_USERCART,
+  REMOVE_FROM_USERCART
 } from './types';
 
 // Register User
@@ -46,6 +49,7 @@ export const getProduct = (id) => dispatch => {
 };
 export const getUserCart = () => dispatch => {
   dispatch(setLoading())
+
   axios
     .get(`/api/actions/`)
     .then(res => dispatch({
@@ -58,11 +62,12 @@ export const getUserCart = () => dispatch => {
         payload: err.response
       })
     );
+
 };
-export const addToUserCart = (product,userId) => dispatch => {
- 
-    axios
-    .post(`/api/actions/${userId}`,product)
+export const addToUserCart = (product, userId) => dispatch => {
+  dispatch(setLoading())
+  axios
+    .post(`/api/actions/${userId}`, product)
     .then(res => dispatch({
       type: ADD_TO_USERCART,
       payload: res.data
@@ -73,10 +78,39 @@ export const addToUserCart = (product,userId) => dispatch => {
         payload: err
       })
     )
-  
- 
+
+
 };
-export const addToCart = (product)=> dispatch =>{
+
+export const change = (productId, operator, cartId) => dispatch => {
+  dispatch(setLoading())
+  if (!cartId)
+    dispatch({
+      type: CHANGE_CART,
+      payload: {
+        productId: productId,
+        operator: operator
+      }
+    })
+  else {
+    console.log(cartId);
+    
+    axios
+    .post(`/api/actions/cart/${cartId}`, {
+      productId,
+      operator
+    })
+    .then(res => {
+      dispatch({
+        type: CHANGE_USERCART,
+        payload: res.data
+      })
+    })}
+};
+
+
+export const addToCart = (product) => dispatch => {
+  dispatch(setLoading())
   dispatch({
     type: ADD_TO_CART,
     payload: product
@@ -84,28 +118,57 @@ export const addToCart = (product)=> dispatch =>{
 }
 
 export const updateCart = (cart, userId) => dispatch => {
-  if(userId){
+  dispatch(setLoading())
+  if (userId) {
     axios
-    .post(`/api/actions/${userId}`,{cart})
-    .then(res => dispatch({
-      type: UPDATE_CART,
-      payload: res.data
-    }))
-    .catch(err =>
-      dispatch({
-        type: GET_ERRORS,
-        payload: err.response.data
+      .post(`/api/actions/${userId}`, {
+        cart
       })
-    );
-    
-  }else {
+      .then(res => dispatch({
+        type: UPDATE_CART,
+        payload: res.data
+      }))
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+
+  } else {
     dispatch({
       type: UPDATE_CART,
       payload: cart
     })
   }
- 
+
 };
+
+export const removeFromCart = (productId, cartId) => dispatch => {
+  dispatch(setLoading())
+  if (cartId) {
+    axios
+      .post(`/api/actions/cart/product/${cartId}`, {
+        productId
+      })
+      .then(res => dispatch({
+        type: REMOVE_FROM_USERCART,
+        payload: res.data
+      }))
+      .catch(err =>
+        dispatch({
+          type: GET_ERRORS,
+          payload: err.response.data
+        })
+      );
+
+  } else {
+    dispatch({
+      type: REMOVE_FROM_CART,
+      payload: productId
+    })
+  }
+}
 export const clearUserCart = () => dispatch => {
   dispatch({
     type: CLEAR_USERCART

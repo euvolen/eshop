@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom'
 import { loginUser } from '../../redux/actions/authActions';
 import TextFieldGroup from '../components/common/TextFieldGroup';
 
@@ -21,6 +22,7 @@ class Login extends Component {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/');
     }
+    console.log(this.props)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,7 +81,9 @@ class Login extends Component {
               />
                 <input type="submit" className="btn btn-info btn-block mt-4" />
               </form>
+               <p>Does not have an account? <Link to={`/register${this.props.history.location.search==='?cart=true' ? '?cart=true' : '/'}`}>Create one!</Link></p>
             </div>
+           
           </div>
         </div>
       </div>

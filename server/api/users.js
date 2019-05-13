@@ -11,7 +11,8 @@ const validateRegisterInput = require('../validation/register')
 const validateLoginInput = require('../validation/login')
 //Load User model
 const User = require('../models/User')
-
+//Load Transaction model
+const Transaction = require('../models/Transaction')
 
 // @route    GET api/users/test
 // @desc     Tests users route
@@ -125,15 +126,21 @@ router.get('/current', passport.authenticate('jwt', {session:false}),
         });
 }
 );
+
+
 // @route   DELETE api/users
 // @desc    Delete user
 // @access  Private
 router.delete( '/',passport.authenticate('jwt', { session: false }),
     (req, res) => {
-    
+        
+      Transaction.findOneAndRemove({ user: req.user.id, isCompleted:false }).then(() =>{
         User.findOneAndRemove({ _id: req.user.id }).then(() =>
           res.json({ success: true })
         )
+
+      })
+       
     }
   )
 

@@ -6,10 +6,7 @@ import { getProduct, addToCart, addToUserCart } from '../../redux/actions/produc
 
 
 class Product extends Component {
-  constructor(props){
-    super(props)
-  
-  }
+
   componentDidMount(){
 
     this.props.getProduct(this.props.match.params.id)
@@ -29,13 +26,14 @@ class Product extends Component {
         if(user.id){
           if(userCart.cart.filter(item =>item.productId === data.productId).length===0){
             this.props.addToUserCart(data, user.id)
-          }
-        }else if (cart.filter(item =>item.productId === data.productId).length===0){
+          } 
+        }else {
+          if (cart.filter(item =>item.productId === data.productId).length===0){
           cart.push(data)
           this.props.addToCart(cart)
         }
       
-  }
+  }}
 
 
   

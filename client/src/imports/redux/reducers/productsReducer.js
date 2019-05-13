@@ -1,23 +1,23 @@
-import isEmpty from '../../utils/is-empty';
-
 import {
   GET_PRODUCTS,
   LOADING,
   GET_PRODUCT,
   ADD_TO_CART,
   ADD_TO_USERCART,
-  UPDATE_CART,
-  GET_CART,
   GET_USERCART,
   CLEAR_USERCART,
-  CLEAR_CART
+  CLEAR_CART,
+  REMOVE_FROM_CART,
+  REMOVE_FROM_USERCART,
+  CHANGE_CART,
+  CHANGE_USERCART
 } from '../actions/types';
 
 const initialState = {
   products: [],
   product: {},
   userCart: {},
-  cart:[],
+  cart: [],
   loading: false
 };
 
@@ -36,37 +36,76 @@ export default function (state = initialState, action) {
             loading: false
         }
         case GET_USERCART:
-        return {
-          ...state,
-          userCart: action.payload,
-            loading: false
-        }
-        case ADD_TO_CART:
           return {
             ...state,
-            cart:action.payload
+            userCart: action.payload,
+              loading: false
           }
-          case ADD_TO_USERCART:
-          return {
-            ...state,
-            userCart:action.payload
-          }
-          case CLEAR_USERCART:
-          return {
-            ...state,
-            userCart:{cart:[]}
-          }
-          case CLEAR_CART:
-          return {
-            ...state,
-            cart:[]
-          }
-              case LOADING:
+          case ADD_TO_CART:
+            return {
+              ...state,
+              cart: action.payload,
+                loading: false
+            }
+            case ADD_TO_USERCART:
+              return {
+                ...state,
+                userCart: action.payload,
+                  loading: false
+              }
+              case CLEAR_USERCART:
                 return {
                   ...state,
-                  loading: true
+                  userCart: {
+                    cart: []
+                  }
                 }
-                default:
-                  return state;
+                case CLEAR_CART:
+                  return {
+                    ...state,
+                    cart: []
+                  }
+                  case CHANGE_USERCART:
+                  return {
+                    ...state,
+                    userCart: action.payload,
+                      loading: false
+                  }
+                  case CHANGE_CART:
+                    const updatedCart = state.cart.concat()
+                    for (const i in updatedCart) {
+                      if (updatedCart[i].productId === action.payload.productId) {
+                        if (action.payload.operator === '+') {
+                          updatedCart[i].quantity++
+                        } else {
+                          if (updatedCart[i].quantity > 1)
+                            updatedCart[i].quantity--
+                        }
+                      }
+                    }
+                    return {
+                      ...state,
+                      cart: state.cart,
+                        loading: false
+                    }
+                    case REMOVE_FROM_CART:
+                      return {
+                        ...state,
+                        cart: state.cart.filter(item => item.productId !== action.payload),
+                          loading: false
+                      }
+                      case REMOVE_FROM_USERCART:
+                      return {
+                        ...state,
+                        userCart: action.payload,
+                          loading: false
+                      }
+                      case LOADING:
+                        return {
+                          ...state,
+                          loading: true
+                        }
+                        default:
+                          return state;
   }
 }

@@ -15,6 +15,11 @@ class Navbar extends Component {
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
+      <li className="nav-item">
+           <Link className="nav-link" to={`/user/${user.id}`}>
+           Settings
+          </Link>
+        </li>
         <li className="nav-item">
           <a
             href=""
