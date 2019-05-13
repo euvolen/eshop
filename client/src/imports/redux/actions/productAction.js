@@ -5,15 +5,12 @@ import {
   LOADING,
   GET_PRODUCT,
   ADD_TO_CART,
-  ADD_TO_USERCART,
   REMOVE_FROM_CART,
   UPDATE_CART,
-  GET_USERCART,
   CLEAR_USERCART,
   CLEAR_CART,
   CHANGE_CART,
-  CHANGE_USERCART,
-  REMOVE_FROM_USERCART
+  UPDATE_USERCART
 } from './types';
 
 // Register User
@@ -47,13 +44,28 @@ export const getProduct = (id) => dispatch => {
       })
     );
 };
+export const confirmTransaction = (id) => dispatch => {
+  dispatch(setLoading())
+  axios
+    .post(`/api/actions/confirm/${id}`)
+    .then(res => dispatch({
+      type: CLEAR_USERCART,
+      payload: {cart:[]}
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
 export const getUserCart = () => dispatch => {
   dispatch(setLoading())
 
   axios
     .get(`/api/actions/`)
     .then(res => dispatch({
-      type: GET_USERCART,
+      type: UPDATE_USERCART,
       payload: res.data
     }))
     .catch(err =>
@@ -69,7 +81,7 @@ export const addToUserCart = (product, userId) => dispatch => {
   axios
     .post(`/api/actions/${userId}`, product)
     .then(res => dispatch({
-      type: ADD_TO_USERCART,
+      type: UPDATE_USERCART,
       payload: res.data
     }))
     .catch(err =>
@@ -102,7 +114,7 @@ export const change = (productId, operator, cartId) => dispatch => {
     })
     .then(res => {
       dispatch({
-        type: CHANGE_USERCART,
+        type: UPDATE_USERCART,
         payload: res.data
       })
     })}
@@ -125,7 +137,7 @@ export const updateCart = (cart, userId) => dispatch => {
         cart
       })
       .then(res => dispatch({
-        type: UPDATE_CART,
+        type: UPDATE_USERCART,
         payload: res.data
       }))
       .catch(err =>
@@ -152,7 +164,7 @@ export const removeFromCart = (productId, cartId) => dispatch => {
         productId
       })
       .then(res => dispatch({
-        type: REMOVE_FROM_USERCART,
+        type: UPDATE_USERCART,
         payload: res.data
       }))
       .catch(err =>

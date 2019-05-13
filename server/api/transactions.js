@@ -3,7 +3,7 @@ const router = express.Router();
 const Transaction = require('../models/Transaction')
 const User = require('../models/User')
 const passport = require('passport')
-
+const email = require('../utils/email')
 // @route    GET api/transaction/test
 // @desc     Tests transaction route
 // @access   Public
@@ -85,7 +85,7 @@ router.post('/cart/:id', passport.authenticate('jwt', {
                      
                 }
             });
-            console.log(data)
+
             data.save().then(data => res.json(data))
 
             }
@@ -94,6 +94,29 @@ router.post('/cart/:id', passport.authenticate('jwt', {
 
     })
 });
+
+// @route    POST api/transaction/confirm/cartId
+// @desc     Confirm transaction
+// @access   Private
+router.post('/confirm/:id', passport.authenticate('jwt', {
+    session: false
+}), (req, res) => {
+
+    Transaction.findById(req.params.id).then(data => {
+
+            if(data){
+
+            data.isCompleted = true
+    
+            data.save().then(data =>email.sendEmail(req,res,[req.user.email],"Confirmaition", `<p>${JSON.stringify(data)}</p>`))
+            }
+            else res.status(404).json({err:"notFound"})
+          
+
+    })
+});
+
+
 // @route    POST api/actions/userId
 // @desc     Create and update incompleted transaction (cart)
 // @access   Crivate

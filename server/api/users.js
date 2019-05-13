@@ -68,15 +68,15 @@ router.post('/register', (req, res)=>{
 // @desc     Login user / Returning JWT token
 // @access   Public
 router.post('/login', (req,res)=>{
-
-    const { errors, isValid} = validateLoginInput(req.body);
+   
+    const { errors, isValid} = validateLoginInput(req.body.data);
 
     // Check Validation    
     if (!isValid){
         return res.status(400).json(errors);
     }
-    const email = req.body.email;
-    const password = req.body.password
+    const email = req.body.data.email;
+    const password = req.body.data.password
 
     //find user by email
     User.findOne({email}).then(user=> {
@@ -90,6 +90,22 @@ router.post('/login', (req,res)=>{
         bcrypt.compare(password, user.password).then(IsMatch =>{
             if (IsMatch){
                 // User Matched
+                if(req.body.cart)
+                Transaction.findOne({user:user._id, isCompleted: false}).then(data =>{
+                    if(data){
+                        console.log(data)
+                        data.cart = req.body.cart
+                        data.save().then(res => console.log('ok'))
+                    }
+                    else {
+                        const cart = new Transaction({
+                            user:user._id,
+                            cart:req.body.cart
+                        })
+                        cart.save().then(() => console.log('ok'))
+                    }
+                    
+                })
                 //Create jwt payload
                 const payload = { id:user.id, name:user.name, avatar:user.avatar, email:user.email,role:user.role} 
                 //Sign Token

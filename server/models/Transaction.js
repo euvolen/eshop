@@ -28,7 +28,6 @@ const TransactionSchema = new Schema({
     ],
     summ: {
         type: Number,
-        required: true
     },
     conditions: {
         type: String,

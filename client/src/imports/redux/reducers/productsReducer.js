@@ -3,14 +3,11 @@ import {
   LOADING,
   GET_PRODUCT,
   ADD_TO_CART,
-  ADD_TO_USERCART,
-  GET_USERCART,
   CLEAR_USERCART,
   CLEAR_CART,
   REMOVE_FROM_CART,
-  REMOVE_FROM_USERCART,
   CHANGE_CART,
-  CHANGE_USERCART
+  UPDATE_USERCART
 } from '../actions/types';
 
 const initialState = {
@@ -35,7 +32,7 @@ export default function (state = initialState, action) {
           product: action.payload,
             loading: false
         }
-        case GET_USERCART:
+        case UPDATE_USERCART:
           return {
             ...state,
             userCart: action.payload,
@@ -47,12 +44,7 @@ export default function (state = initialState, action) {
               cart: action.payload,
                 loading: false
             }
-            case ADD_TO_USERCART:
-              return {
-                ...state,
-                userCart: action.payload,
-                  loading: false
-              }
+           
               case CLEAR_USERCART:
                 return {
                   ...state,
@@ -65,12 +57,7 @@ export default function (state = initialState, action) {
                     ...state,
                     cart: []
                   }
-                  case CHANGE_USERCART:
-                  return {
-                    ...state,
-                    userCart: action.payload,
-                      loading: false
-                  }
+                  
                   case CHANGE_CART:
                     const updatedCart = state.cart.concat()
                     for (const i in updatedCart) {
@@ -94,12 +81,7 @@ export default function (state = initialState, action) {
                         cart: state.cart.filter(item => item.productId !== action.payload),
                           loading: false
                       }
-                      case REMOVE_FROM_USERCART:
-                      return {
-                        ...state,
-                        userCart: action.payload,
-                          loading: false
-                      }
+                      
                       case LOADING:
                         return {
                           ...state,

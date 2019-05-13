@@ -14,28 +14,37 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
 
     const authLinks = (
+      
       <ul className="navbar-nav ml-auto">
       <li className="nav-item">
-           <Link className="nav-link" to={`/user/${user.id}`}>
-           Settings
-          </Link>
-        </li>
-        <li className="nav-item">
-          <a
-            href=""
-            onClick={this.onLogoutClick.bind(this)}
-            className="nav-link"
-          >
-            <img
+      <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <img
               className="rounded-circle"
               src={user.avatar}
               alt={user.name}
               style={{ width: '25px', marginRight: '5px' }}
               title="You must have a Gravatar connected to your email to display an image"
-            />{' '}
+            />
+          
+        </a> 
+        </li>
+        <div className="dropdown-menu$show" aria-labelledby="navbarDropdown">
+       
+       
+        <Link className="dropdown-item" to={`/user/${user.id}`}>
+           Settings
+          </Link>
+ 
+          <a
+            href=""
+            onClick={this.onLogoutClick.bind(this)}
+            className="dropdown-item"
+          >
+        {' '}
             Logout
           </a>
-        </li>
+
+        </div>
       </ul>
     );
 
@@ -78,7 +87,10 @@ class Navbar extends Component {
                 </Link>
               </li>
             </ul>
-            {isAuthenticated ? authLinks : guestLinks}
+            <ul>
+               {isAuthenticated ? authLinks : guestLinks}
+            </ul>
+           
           </div>
         </div>
       </nav>

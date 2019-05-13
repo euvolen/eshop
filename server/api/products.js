@@ -57,30 +57,7 @@ router.get('/:id', (req, res) => {
     })
 
 
-// @route    GET api/products/all/:adminId
-// @desc     Return all products with additional data for admins
-// @access   Authorized
-router.get('/all/:id', passport.authenticate('jwt', {
-    session: false
-}), (req, res) => {
-    User.findById(req.params.id).then(user => {
-        if (user.id === req.user.id && user.role === 'admin') {
 
-            Product.find().then(
-                data => {
-                    res.status(200).json(data)
-                }
-            ).catch(
-                err => res.status(404).json(err)
-            )
-        } else {
-            res.status(401).json({
-                err: 'Unauthorized'
-            })
-        }
-    })
-
-});
 
 // @route    POST api/products/:adminId
 // @desc     Create new Product 

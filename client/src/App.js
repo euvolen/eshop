@@ -19,6 +19,7 @@ import Settings from './imports/ui/pages/Settings';
 import NotFound from './imports/ui/pages/NotFound';
 import { getUserCart } from './imports/redux/actions/productAction';
 import Confirmation from './imports/ui/pages/Confirmation';
+import ThankYou from './imports/ui/pages/ThankYou';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -56,6 +57,7 @@ function App() {
             <Route exact path="/cart" component={Cart} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/confirmation" component={Confirmation} />
+            <Route exact path="/thank-you" component={ThankYou} />
             <Route exact path="/user/:id" component={Settings} />
             <Route path="*" component={NotFound}/>
           </Switch>

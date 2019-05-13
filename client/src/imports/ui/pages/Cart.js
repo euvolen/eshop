@@ -30,12 +30,11 @@ import Spinner from '../components/common/Spinner';
 
     let content = <div/>
     if(!loading){
-      if(Object.keys(userCart).length>0){
-
-        content = userCart.cart.map(item => {return <CartItem key={item._id} item = {item} change={this.props.change} cartId={userCart._id}  removeFromCart={this.props.removeFromCart}/>})
-      }else if(cart.length>0){
-
-        content =  cart.map(item => {return <CartItem key={item.productId}  
+      if(Object.keys(userCart).length>1){
+            content = userCart.cart.map(item => {return <CartItem key={item._id} item = {item} change={this.props.change} cartId={userCart._id}  removeFromCart={this.props.removeFromCart}/>})
+      }else{ 
+        if(cart.length>0)
+              content =  cart.map(item => {return <CartItem key={item.productId}  
                                                      item = {item}                                            
                                                       change={this.props.change}
                                                       removeFromCart={this.props.removeFromCart}

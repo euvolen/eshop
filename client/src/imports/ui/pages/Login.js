@@ -42,8 +42,11 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-
-    this.props.loginUser(userData);
+    if(this.props.history.location.search==='?cart=true')
+    this.props.loginUser(userData, this.props.products.cart);
+    else {
+      this.props.loginUser(userData);
+    }
   }
 
   onChange(e) {
@@ -99,7 +102,8 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors
+  errors: state.errors,
+  products:state.products
 });
 
 export default connect(mapStateToProps, { loginUser })(Login);
