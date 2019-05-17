@@ -6,7 +6,8 @@
   "scripts": {
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
-    "app": "concurrently \"npm run server\" \"npm run client\""
+    "app": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "mocha --recursive --exit"
   },
   "author": "EuVolen",
   "license": "ISC",
@@ -24,6 +25,9 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^6.1.4",
     "nodemon": "^1.19.0"
   }
 }
