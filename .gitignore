@@ -2,3 +2,4 @@
 server/configs/keys_dev.js
 package-lock.json
 /design
+/.idea

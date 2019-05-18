@@ -26,7 +26,7 @@ class Products extends Component {
           }
           else 
           content = <Spinner/>
-    return (  <div className="container"><div className="row">{content}</div> </div>)
+    return (  <div className="row product-list dev"><div className="row product-list dev">{content}</div> </div>)
     
   }
 }

@@ -4,6 +4,8 @@ const Transaction = require('../models/Transaction')
 const User = require('../models/User')
 const passport = require('passport')
 const email = require('../utils/email')
+
+
 // @route    GET api/transaction/test
 // @desc     Tests transaction route
 // @access   Public
@@ -119,7 +121,7 @@ router.post('/confirm/:id', passport.authenticate('jwt', {
 
 // @route    POST api/actions/userId
 // @desc     Create and update incompleted transaction (cart)
-// @access   Crivate
+// @access   Private
 router.post('/:id', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
@@ -166,4 +168,5 @@ router.post('/:id', passport.authenticate('jwt', {
         }
     })
 });
+
 module.exports = router

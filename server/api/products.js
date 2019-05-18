@@ -31,8 +31,10 @@ router.get('/all', (req, res) => {
             err => res.status(404).json(err)
         )
 });
+
+
 // @route    GET api/products/:Id
-// @desc     Return a products by its ID
+// @desc     Return a product (user view) by its ID
 // @access   public
 router.get('/:id', (req, res) => {
 
@@ -59,10 +61,10 @@ router.get('/:id', (req, res) => {
 
 
 
-// @route    POST api/products/:adminId
-// @desc     Create new Product 
+// @route    POST api/products/:adminId/:productId
+// @desc     Create or Edit a Product 
 // @access   Authorized
-router.post('/:id', passport.authenticate('jwt', {
+router.post('/product/:id/', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
 
@@ -76,16 +78,11 @@ router.post('/:id', passport.authenticate('jwt', {
         return res.status(400).json(errors);
     }
 
-    User.findById(req.params.id).then(user => {
-        if (user.id === req.user.id && user.role === 'admin') {
-            Product.findOne({
-                name: req.body.name
-            }).then(product => {
-                if (product) {
-                    return res.status(400).json({
-                        err: `Product with name ${req.body.name} already exists`
-                    })
-                } else {
+    User.findById(req.user.id).then(user => {
+        if (user.role === 'admin') {
+            Product.findById(req.params.id).then(product => {
+                if (!product) {
+
                     const newProduct = new Product({
                         name: req.body.name,
                         description: req.body.description,
@@ -97,45 +94,6 @@ router.post('/:id', passport.authenticate('jwt', {
                     })
                     newProduct.save().then(product=>res.json(product))
                     .catch(err=>res.json({err}))
-                }
-
-            })
-
-
-        } else {
-            res.status(401).json({
-                err: 'Unauthorized'
-            })
-        }
-    })
-
-});
-
-
-// @route    POST api/products/:adminId/:productId
-// @desc     Edit a Product 
-// @access   Authorized
-router.post('/product/:id/:productId', passport.authenticate('jwt', {
-    session: false
-}), (req, res) => {
-
-    const {
-        errors,
-        isValid
-    } = validateProductInput(req.body);
-
-    // Check Validation    
-    if (!isValid) {
-        return res.status(400).json(errors);
-    }
-
-    User.findById(req.params.id).then(user => {
-        if (user.id === req.user.id && user.role === 'admin') {
-            Product.findById(req.params.productId).then(product => {
-                if (!product) {
-                    return res.status(404).json({
-                        err: `Product with id ${req.params.productId} doesn't exists`
-                    })
                 } else {
                    const productFields = {}
                         productFields.name= req.body.name,
@@ -160,7 +118,7 @@ router.post('/product/:id/:productId', passport.authenticate('jwt', {
 
 
         } else {
-            res.status(401).json({
+            res.status(403).json({
                 err: 'Unauthorized'
             })
         }
@@ -170,13 +128,13 @@ router.post('/product/:id/:productId', passport.authenticate('jwt', {
 // @route    DELETE api/products/:adminId/:productId
 // @desc     Delete a Product 
 // @access   Authorized
-router.delete('/product/:id/:productId', passport.authenticate('jwt', {
+router.delete('/product/:productId', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
 
 
-    User.findById(req.params.id).then(user => {
-        if (user.id === req.user.id && user.role === 'admin') {
+    User.findById(req.user.id).then(user => {
+        if (user.role === 'admin') {
             Product.findById(req.params.productId).then(product => {
                 if (!product) {
                     return res.status(404).json({
@@ -191,7 +149,7 @@ router.delete('/product/:id/:productId', passport.authenticate('jwt', {
 
 
         } else {
-            res.status(401).json({
+            res.status(403).json({
                 err: 'Unauthorized'
             })
         }

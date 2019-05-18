@@ -47,7 +47,8 @@ function App() {
     <Router>
       <div className="App">
         <Navbar/>
-       <div className="container">
+        <div className="main-content">
+           <div className="container">
           <Switch>
             <Route exact path="/" component={Products} />
             <Route exact path="/register" component={Register} />
@@ -63,6 +64,8 @@ function App() {
           </Switch>
           
         </div>
+        </div>
+      
        <Footer/>
       </div>
     </Router>

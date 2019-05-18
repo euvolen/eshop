@@ -14,57 +14,67 @@ class Navbar extends Component {
     const { isAuthenticated, user } = this.props.auth;
 
     const authLinks = (
-      
-      <ul className="navbar-nav ml-auto">
-      <li className="nav-item">
-      <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <img
+      <ul className="nav navbar-nav">
+      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/cart'}><i className="fa fa-shopping-cart"></i></Link></li>
+      <li className="nav-item" role="presentation"></li>
+      <li className="nav-item" role="presentation"><Link className="nav-link" to={`/user/${user.id}`}><img
               className="rounded-circle"
               src={user.avatar}
               alt={user.name}
               style={{ width: '25px', marginRight: '5px' }}
               title="You must have a Gravatar connected to your email to display an image"
-            />
-          
-        </a> 
-        </li>
-        <div className="dropdown-menu$show" aria-labelledby="navbarDropdown">
-       
-       
-        <Link className="dropdown-item" to={`/user/${user.id}`}>
-           Settings
-          </Link>
- 
-          <a
+            /></Link></li>
+          <li className="nav-item" role="presentation">
+            <a
             href=""
             onClick={this.onLogoutClick.bind(this)}
-            className="dropdown-item"
+            className="nav-link"
           >
-        {' '}
+           {' '}
             Logout
           </a>
-
-        </div>
+          </li>
       </ul>
     );
 
     const guestLinks = (
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/register">
-            Sign Up
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/login">
-            Login
-          </Link>
-        </li>
-      </ul>
+      <ul className="nav navbar-nav">
+      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/cart'}><i className="fa fa-shopping-cart"></i></Link></li>
+      <li className="nav-item" role="presentation"></li>
+      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/register'}>Signin</Link></li>
+      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/login'}>Login</Link></li>
+  </ul>
     );
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
+      <nav className="navbar navbar-light navbar-expand-md fixed-top shadow-sm" style={{height: '50px'}}>
+      <div className="container"><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button><img src="/assets/img/logo1.png?h=3f822f15b94ede6903575df11c0f8eee" height="40"/>
+          <div className="collapse navbar-collapse justify-content-end"
+              id="navcol-1">
+              <ul className="nav navbar-nav flex-fill">
+                  <li className="nav-item" role="presentation"><Link className="nav-link active justify-content-start" to={'/'}>Products</Link></li>
+                  <li className="nav-item" role="presentation"><Link className="nav-link active justify-content-start" to={'/about'}>About</Link></li>
+              </ul>
+           {isAuthenticated ? authLinks : guestLinks}
+          </div>
+      </div>
+  </nav>
+    );
+  }
+}
+
+Navbar.propTypes = {
+  logoutUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps, { logoutUser })(Navbar);
+/*
+ <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
           <Link className="navbar-brand" to="/">
             Eshop
@@ -93,18 +103,4 @@ class Navbar extends Component {
            
           </div>
         </div>
-      </nav>
-    );
-  }
-}
-
-Navbar.propTypes = {
-  logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
-};
-
-const mapStateToProps = state => ({
-  auth: state.auth
-});
-
-export default connect(mapStateToProps, { logoutUser })(Navbar);
+      </nav> */

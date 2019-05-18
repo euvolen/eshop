@@ -9,7 +9,7 @@ import Spinner from '../components/common/Spinner';
  class Cart extends Component {
   constructor(props){
     super(props)
-    
+    this.state = {total:0}
     autoBind(this)
   }
 
@@ -46,11 +46,33 @@ import Spinner from '../components/common/Spinner';
       content = <Spinner/>
     }
    
-    return <div>
-      <h1>Cart</h1>
-      {content}
-      <button onClick={this.toConfirm.bind(this)}>Continue</button>
+    return (<section class="cart">
+    <div class="container">
+        <h1>Cart</h1>
+        <div class="table-responsive" >
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Product name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {content}
+                    <tr class="justify-content-center">
+                        <td class="justify-content-end"></td>
+                        <td class="justify-content-end"></td>
+                        <td class="justify-content-end"></td>
+                        <td class="justify-content-end"><strong>Total</strong><br/></td>
+                        <td class="justify-content-end">{this.state.total}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
+</section>)
   }
 }
 
@@ -67,3 +89,12 @@ const mapStateToProps = state => ({
   errors:state.errors
 });
 export default connect(mapStateToProps,{removeFromCart, updateCart, change}) (Cart)
+
+/**
+ * 
+ * <div>
+      <h1>Cart</h1>
+      {content}
+      <button onClick={this.toConfirm.bind(this)}>Continue</button>
+    </div>
+ */
