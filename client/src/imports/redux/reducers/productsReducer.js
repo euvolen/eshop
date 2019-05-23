@@ -41,7 +41,7 @@ export default function (state = initialState, action) {
           case ADD_TO_CART:
             return {
               ...state,
-              cart: action.payload,
+              cart: [action.payload,...state.cart],
                 loading: false
             }
            
@@ -67,6 +67,9 @@ export default function (state = initialState, action) {
                         } else {
                           if (updatedCart[i].quantity > 1)
                             updatedCart[i].quantity--
+                            else{
+                              updatedCart.splice(i,1)
+                            }
                         }
                       }
                     }

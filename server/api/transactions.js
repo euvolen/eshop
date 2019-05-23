@@ -83,6 +83,7 @@ router.post('/cart/:id', passport.authenticate('jwt', {
                     } else{
                         if(element.quantity>1)
                         element.quantity--
+                     
                     }
                      
                 }

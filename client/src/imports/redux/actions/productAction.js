@@ -105,7 +105,6 @@ export const change = (productId, operator, cartId) => dispatch => {
       }
     })
   else {
-    console.log(cartId);
     
     axios
     .post(`/api/actions/cart/${cartId}`, {

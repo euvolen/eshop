@@ -6,13 +6,14 @@ import PropTypes from 'prop-types'
 
 
   render() {
-      const {product} = this.props
+      const {product, id} = this.props
+      console.log(product);
       
     return (
       <div className="col-sm-6 col-md-4 product-item animation-element slide-top-left">
       <div className="product-container">
           <div className="row">
-              <div className="col-md-12"><Link className="product-image" to={`/products/${product._id}`}><img src="/assets/img/iphone6.jpg?h=4da047b0dfd5972a29fc532060989c49"/></Link></div>
+              <div className="col-md-12"><Link className="product-image" to={`/products/${product._id}`}> <img src={product.img} style={{ width: '200px', margin: 'auto', display: 'block' }}/></Link></div>
           </div>
           <div className="row">
               <div className="col-8">
@@ -21,11 +22,19 @@ import PropTypes from 'prop-types'
           </div>
          <div className="row">
               <div className="col-12">
-                  <p className="product-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam ornare sem sed nisl dignissim, facilisis dapibus lacus vulputate. Sed lacinia lacinia magna. </p>
+                  <p className="product-description">{product.description} </p>
                   <div className="row">
-                      <div className="col-6"><button className="btn btn-light" type="button">Buy Now!</button></div>
+                      <div className="col-6"><button className="btn btn-light" onClick={()=>{
+                               let data ={
+                                productId:product._id,
+                                name:product.name,
+                                price:product.price,
+                                quantity:1
+                              }
+                          this.props.add(data, id)
+                      }}  type="button">Add to cart</button></div>
                       <div className="col-6">
-                          <p className="product-price">$599.00 </p>
+                          <p className="product-price">${product.price} </p>
                       </div>
                   </div>
               </div>
@@ -37,7 +46,9 @@ import PropTypes from 'prop-types'
 }
 
 ProductItem.propTypes ={
-    product: PropTypes.object.isRequired
+    add: PropTypes.func.isRequired,
+    product: PropTypes.object.isRequired,
+    id:PropTypes.string
 }
 
 export default ProductItem
@@ -45,7 +56,7 @@ export default ProductItem
 /*
  <div className="col-md-3">
        <Link to={`/products/${product._id}`}><h1>{product.name}</h1></Link>
-        <img src={product.img} style={{ width: '200px', margin: 'auto', display: 'block' }}/>
-      
+       
+      <img src="/assets/img/iphone6.jpg?h=4da047b0dfd5972a29fc532060989c49"/>
       </div>
 */

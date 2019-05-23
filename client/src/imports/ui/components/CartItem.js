@@ -18,7 +18,8 @@ import PropTypes from 'prop-types'
          <p>{item.quantity}</p>
          <button onClick={change.bind(this,item.productId, '+', cartId ? cartId : undefined)}>+</button>
          </td>
-          <td>{item.quantity*item.price}</td>
+          <td>{item.quantity*item.price}  <button onClick={()=>{removeFromCart(item.productId, cartId ? cartId : undefined)}}>X</button></td>
+         
       </tr>)
       
     

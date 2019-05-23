@@ -29,8 +29,7 @@ class Product extends Component {
           } 
         }else {
           if (cart.filter(item =>item.productId === data.productId).length===0){
-          cart.push(data)
-          this.props.addToCart(cart)
+          this.props.addToCart(data)
         }
       
   }}
@@ -47,21 +46,18 @@ class Product extends Component {
           <div className="row">
               <div className="col-md-7">
                   <div className="row">
-                      <div className="col-md-12"><img className="img-thumbnail img-fluid center-block" src="/assets/img/videomicme.png?h=e65dbc59fba1ebe1bd98fe1bf2964838"/></div>
+                      <div className="col-md-12"><img className="img-thumbnail img-fluid center-block" src={product.img}/></div>
                   </div>
-                  <h3 className="product-image">Price:&nbsp;</h3>
+                  <h3 className="product-image">Price:{product.price}&nbsp;</h3>
               </div>
               <div className="col-md-5">
-                  <h1>Lorem Ipsum</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin elit massa. className aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris malesuada rutrum magna. Phasellus maximus
-                      nunc eget massa euismod bibendum. Phasellus justo felis, porttitor nec justo eu, vestibulum ultrices neque. Maecenas iaculis euismod tempor. Cras vel pellentesque nunc. Sed sit amet convallis dolor, eget dictum elit. Donec ut justo
-                      arcu. Vivamus tincidunt nibh ac sem lobortis semper. Cras vulputate mattis euismod. Morbi accumsan leo in leo condimentum, tincidunt pretium dui scelerisque. Morbi mi dui, vehicula vel velit eget, mattis bibendum lectus. Integer
-                      iaculis libero at arcu laoreet aliquam. Cras at libero sapien. Sed luctus erat sit amet est hendrerit faucibus. </p>
+                  <h1>{product.name}</h1>
+                  <p>{product.description} </p>
               </div>
           </div>
           <div className="row">
               <div className="col col-md-8"></div>
-              <div className="col" data-bs-hover-animate="pulse"><button className="btn btn-primary btn-block" type="button">Button</button></div>
+              <div className="col" data-bs-hover-animate="pulse"><button className="btn btn-primary btn-block" onClick={this.addToCart.bind(this)} type="button">Add to cart</button></div>
           </div>
       </div>
 
@@ -84,12 +80,3 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 export default connect(mapStateToProps,{getProduct, addToCart, addToUserCart})(Product)
-
-/**
- *   <div>
-        <h1>{product.name}</h1>
-        <p>{product.description}</p>
-        <h5>{product.price}</h5>
-        <button onClick={this.addToCart.bind(this, product.id)}>Add</button>
-      </div>
- */
