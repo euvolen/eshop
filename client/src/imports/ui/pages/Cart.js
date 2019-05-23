@@ -9,7 +9,6 @@ import Spinner from '../components/common/Spinner';
  class Cart extends Component {
   constructor(props){
     super(props)
-    this.state = {total:0}
     autoBind(this)
   }
 
@@ -30,7 +29,7 @@ import Spinner from '../components/common/Spinner';
 
     let content = <div/>
     if(!loading){
-      if(Object.keys(userCart).length>2){
+      if(Object.keys(userCart).length>1){
             content = userCart.cart.map(item => {return <CartItem key={item._id} item = {item} change={this.props.change} cartId={userCart._id}  removeFromCart={this.props.removeFromCart}/>})
       }else{ 
         if(cart.length>0)
@@ -65,10 +64,12 @@ import Spinner from '../components/common/Spinner';
                         <td class="justify-content-end"></td>
                         <td class="justify-content-end"></td>
                         <td class="justify-content-end"></td>
-                        <td class="justify-content-end"><strong>Total</strong><br/></td>
-                        <td class="justify-content-end">{this.state.total}</td>
+                        <td class="justify-content-end"><br/></td>
+                        <td class="justify-content-end"></td>
                     </tr>
+                              <button onClick={this.toConfirm.bind(this)}>Continue</button>
                 </tbody>
+      
             </table>
         </div>
     </div>
@@ -89,12 +90,3 @@ const mapStateToProps = state => ({
   errors:state.errors
 });
 export default connect(mapStateToProps,{removeFromCart, updateCart, change}) (Cart)
-
-/**
- * 
- * <div>
-      <h1>Cart</h1>
-      {content}
-      <button onClick={this.toConfirm.bind(this)}>Continue</button>
-    </div>
- */
