@@ -8,7 +8,7 @@ const connect =()=>{
 
     return new Promise((resolve, reject)=>{
         mongoose
-        .connect(db,{useNewUrlParser:true})
+        .connect(db,{useNewUrlParser:true, useFindAndModify:false})
         .then((res)=>{ 
             console.log('MongoDb connected')
             resolve()} )

@@ -12,11 +12,13 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-
+    const { cart, userCart } = this.props.products;
+    let ucart = []
+    if(userCart.cart) 
+       ucart = userCart.cart
     const authLinks = (
-      <ul className="nav navbar-nav">
-      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/cart'}><i className="fa fa-shopping-cart"></i></Link></li>
-      <li className="nav-item" role="presentation"></li>
+ <>
+     {user.role === 'admin' ? <li className="nav-item" role="presentation"><Link className="nav-link" to={'/admin'}>Admin</Link></li> : undefined}
       <li className="nav-item" role="presentation"><Link className="nav-link" to={`/user/${user.id}`}><img
               className="rounded-circle"
               src={user.avatar}
@@ -34,28 +36,30 @@ class Navbar extends Component {
             Logout
           </a>
           </li>
-      </ul>
+      </>
     );
 
     const guestLinks = (
-      <ul className="nav navbar-nav">
-      <li className="nav-item" role="presentation"><Link className="nav-link" to={'/cart'}><i className="fa fa-shopping-cart"></i></Link></li>
-      <li className="nav-item" role="presentation"></li>
+      <>
+      
       <li className="nav-item" role="presentation"><Link className="nav-link" to={'/register'}>Signin</Link></li>
       <li className="nav-item" role="presentation"><Link className="nav-link" to={'/login'}>Login</Link></li>
-  </ul>
+      </>
     );
 
     return (
-      <nav className="navbar navbar-light navbar-expand-md fixed-top shadow-sm" style={{height: '50px'}}>
-      <div className="container"><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button><img src="/assets/img/logo1.png?h=3f822f15b94ede6903575df11c0f8eee" height="40"/>
+      <nav className="navbar navbar-light navbar-expand-lg fixed-top bg-white clean-navbar">
+      <div className="container"><div className="navbar-brand logo" >Eugelion</div><button data-toggle="collapse" className="navbar-toggler" data-target="#navcol-1"><span className="sr-only">Toggle navigation</span><span className="navbar-toggler-icon"></span></button>
           <div className="collapse navbar-collapse justify-content-end"
               id="navcol-1">
               <ul className="nav navbar-nav flex-fill">
                   <li className="nav-item" role="presentation"><Link className="nav-link active justify-content-start" to={'/'}>Products</Link></li>
                   <li className="nav-item" role="presentation"><Link className="nav-link active justify-content-start" to={'/about'}>About</Link></li>
               </ul>
-           {isAuthenticated ? authLinks : guestLinks}
+              <ul className="nav navbar-nav">
+            <li className="nav-item" role="presentation"><Link className="nav-link" to={'/cart'}><i className="fa fa-shopping-basket"><span className="badge badge-secondary">{isAuthenticated ? (ucart.length>0 ? ucart.length : undefined ):(cart.length>0 ? cart.length : undefined )}</span></i></Link></li>
+           {isAuthenticated  ? authLinks : guestLinks}
+           </ul>
           </div>
       </div>
   </nav>
@@ -65,42 +69,13 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired
+  auth: PropTypes.object.isRequired,
+  products:PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  products: state.products
 });
 
 export default connect(mapStateToProps, { logoutUser })(Navbar);
-/*
- <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            Eshop
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#mobile-nav"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-
-          <div className="collapse navbar-collapse" id="mobile-nav">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/cart">
-                  {' '}
-                  Cart
-                </Link>
-              </li>
-            </ul>
-            <ul>
-               {isAuthenticated ? authLinks : guestLinks}
-            </ul>
-           
-          </div>
-        </div>
-      </nav> */

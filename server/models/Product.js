@@ -5,7 +5,11 @@ const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
     name:{
         type:String,
-        required: true
+        required: true,
+        validate: {
+            validator: async name => Product.doesntExist({ name }),
+            message: () => `Name has been already taken`
+        }
     },
     description:{
         type:String,
@@ -23,17 +27,22 @@ const ProductSchema = new Schema({
         type:Number,
         required: true
     },
+    category:{
+        type: Schema.Types.ObjectId,
+        ref: 'categories'
+    },
     quantity:{
         type:Number,
         required:true
     },
-    img:{
-        type:String
-    },
-    date:{
-        type:Date,
-        default: Date.now
-    },
+    rataing:Number,
+    img:String,
+ 
+}, {
+    timestamps:true
 });
-
+//Creates static methods for all collection
+ProductSchema.statics.doesntExist = async function (opts) {
+    return await this.where(opts).countDocuments() === 0
+}
 module.exports = Product = mongoose.model('products', ProductSchema);

@@ -7,12 +7,19 @@ import {
   CLEAR_CART,
   REMOVE_FROM_CART,
   CHANGE_CART,
-  UPDATE_USERCART
+  UPDATE_USERCART,
+  GET_CATEGORIES,
+  FILTER_PRODUCTS,
+  TRANSACTION_ADMIN,
+  PRODUCTS_ADMIN,
+  PRODUCT_ADMIN
 } from '../actions/types';
 
 const initialState = {
   products: [],
+  filter: [],
   product: {},
+  categories:[],
   userCart: {},
   cart: [],
   loading: false
@@ -26,6 +33,36 @@ export default function (state = initialState, action) {
         products: action.payload,
           loading: false
       }
+      case FILTER_PRODUCTS:
+        return {
+          ...state,
+          products: action.payload,
+            loading: false
+        }
+        case TRANSACTION_ADMIN:
+          return {
+            ...state,
+            transactions: action.payload,
+              loading: false
+          }
+          case PRODUCTS_ADMIN:
+            return {
+              ...state,
+              products: action.payload,
+                loading: false
+            }
+            case PRODUCT_ADMIN:
+              return {
+                ...state,
+                product: action.payload,
+                  loading: false
+              }      
+      case GET_CATEGORIES:
+        return {
+          ...state,
+          categories: action.payload,
+            loading: false
+        }
       case GET_PRODUCT:
         return {
           ...state,

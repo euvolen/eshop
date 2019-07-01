@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const keys = require('../configs/keys')
 const passport = require('passport')
+const multer = require('multer')
 
 // Load input validation
 const validateRegisterInput = require('../validation/register')
@@ -75,6 +76,7 @@ router.post('/login', (req,res)=>{
     if (!isValid){
         return res.status(400).json(errors);
     }
+
     const email = req.body.data.email;
     const password = req.body.data.password
 
@@ -93,7 +95,7 @@ router.post('/login', (req,res)=>{
                 if(req.body.cart)
                 Transaction.findOne({user:user._id, isCompleted: false}).then(data =>{
                     if(data){
-                        console.log(data)
+                  
                         data.cart = req.body.cart
                         data.save().then(res => console.log('ok'))
                     }

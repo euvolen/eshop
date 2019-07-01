@@ -25,19 +25,21 @@ import Spinner from '../components/common/Spinner';
 
   render() {
     const {loading, userCart, cart} = this.props.products
-
+    let total = 0
 
     let content = <div/>
     if(!loading){
       if(Object.keys(userCart).length>1){
+        total = price(userCart.cart)
             content = userCart.cart.map(item => {return <CartItem key={item._id} item = {item} change={this.props.change} cartId={userCart._id}  removeFromCart={this.props.removeFromCart}/>})
       }else{ 
         if(cart.length>0)
-              content =  cart.map(item => {return <CartItem key={item.productId}  
+           { total = price(cart)  
+             content =  cart.map(item => {return <CartItem key={item.productId}  
                                                      item = {item}                                            
                                                       change={this.props.change}
                                                       removeFromCart={this.props.removeFromCart}
-                                                     />})
+                                                     />})}
       
     }
   }
@@ -45,36 +47,41 @@ import Spinner from '../components/common/Spinner';
       content = <Spinner/>
     }
    
-    return (<section class="cart">
-    <div class="container">
-        <h1>Cart</h1>
-        <div class="table-responsive" >
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th colspan="2">Product name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {content}
-                    <tr class="justify-content-center">
-                        <td class="justify-content-end"></td>
-                        <td class="justify-content-end"></td>
-                        <td class="justify-content-end"></td>
-                        <td class="justify-content-end"><br/></td>
-                        <td class="justify-content-end"></td>
-                    </tr>
-                              <button onClick={this.toConfirm.bind(this)}>Continue</button>
-                </tbody>
-      
-            </table>
+    return (    <main className="page shopping-cart-page">
+    <section className="clean-block clean-cart dark">
+        <div className="container">
+            <div className="block-heading">
+                <h2 className="text-info">Shopping Cart</h2>
+            </div>
+            <div className="content">
+                <div className="row no-gutters">
+                    <div className="col-md-12 col-lg-8">
+                        <div className="items">
+                         {content}
+              
+                        </div>
+                    </div>
+                    <div className="col-md-12 col-lg-4">
+                        <div className="summary">
+                            <h3>Summary</h3>
+                            <h4><span className="text">Total</span><span className="price">$ {total}</span></h4><button className="btn btn-primary btn-block btn-lg" type="button" onClick={this.toConfirm}>Checkout</button></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>)
+    </section>
+</main>)
   }
+}
+
+const price =(cart) =>{
+  let res = 0
+  if(cart)
+  cart.map( i =>{
+    res += i.price*i.quantity
+  })
+
+  return res
 }
 
 Cart.propTypes = {

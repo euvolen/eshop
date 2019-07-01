@@ -4,7 +4,7 @@ const Transaction = require('../models/Transaction')
 const User = require('../models/User')
 const passport = require('passport')
 const email = require('../utils/email')
-
+const confirm = require('../utils/templates').confirmation
 
 // @route    GET api/transaction/test
 // @desc     Tests transaction route
@@ -44,7 +44,7 @@ router.post('/cart/product/:id', passport.authenticate('jwt', {
    
     
     Transaction.findById(req.params.id).then(data => {
-        console.log(data, req.body)
+       
         if (
             data.cart.filter(
               item => item.productId.toString() === req.body.productId
@@ -105,13 +105,13 @@ router.post('/confirm/:id', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
 
-    Transaction.findById(req.params.id).then(data => {
+    Transaction.findById(req.params.id).populate('user').then(data => {
 
             if(data){
 
             data.isCompleted = true
-    
-            data.save().then(data =>email.sendEmail(req,res,[req.user.email],"Confirmaition", `<p>${JSON.stringify(data)}</p>`))
+     
+            data.save().then(cart =>email.sendEmail(req,res,[req.user.email],"Confirmaition", confirm(cart)))
             }
             else res.status(404).json({err:"notFound"})
           
@@ -143,7 +143,7 @@ router.post('/:id', passport.authenticate('jwt', {
 
                 transaction.cart.push(cart)
                 transaction.save().then(data => {
-                    console.log(data);
+              
 
                     res.status(200).json(data)
                 })
@@ -154,7 +154,7 @@ router.post('/:id', passport.authenticate('jwt', {
 
         } else {
             const newCart = new Transaction({
-                user: req.user.id,
+                user: req.user._id,
                 cart: [{
                     productId: req.body.productId,
                     name: req.body.name,

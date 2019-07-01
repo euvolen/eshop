@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const TransactionSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        refs: 'users'
+        ref: 'users'
     },
     cart: [{
             productId:{

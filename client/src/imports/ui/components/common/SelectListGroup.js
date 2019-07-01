@@ -11,8 +11,8 @@ const SelectListGroup =({
     options
 })=> {
   const selectOptions = options.map(option =>(
-      <option key={option.label} value={option.value}>
-          {option.label}
+      <option key={option.name} value={option._id}>
+          {option.name}
       </option>
   ) )  
   return (
@@ -24,6 +24,7 @@ const SelectListGroup =({
               {'is-invalid':err})} 
               name={name}
               >
+                  <option value={''}>_</option>
                   {selectOptions}
               </select>
               {info && <small className ="form-text text-muted">{info}</small>}

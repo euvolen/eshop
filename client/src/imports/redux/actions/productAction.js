@@ -10,10 +10,12 @@ import {
   CLEAR_USERCART,
   CLEAR_CART,
   CHANGE_CART,
-  UPDATE_USERCART
+  UPDATE_USERCART,
+  GET_CATEGORIES,
+  FILTER_PRODUCTS
 } from './types';
 
-// Register User
+// GET all products
 export const getProducts = () => dispatch => {
   dispatch(setLoading())
   axios
@@ -21,6 +23,38 @@ export const getProducts = () => dispatch => {
     .then(res => dispatch({
       type: GET_PRODUCTS,
       payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+// GET all products
+export const getCategories = () => dispatch => {
+  dispatch(setLoading())
+  axios
+    .get('/api/categories/all')
+    .then(res => dispatch({
+      type: GET_CATEGORIES,
+      payload: res.data
+    }))
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
+};
+// GET all products
+export const filterProducts = (name) => dispatch => {
+  dispatch(setLoading())
+  axios
+    .get('/api/products/all')
+    .then(res => dispatch({
+      type: FILTER_PRODUCTS,
+      payload: res.data.filter(product => product.category.name === name)
     }))
     .catch(err =>
       dispatch({
@@ -59,6 +93,7 @@ export const confirmTransaction = (id) => dispatch => {
       })
     );
 };
+
 export const getUserCart = () => dispatch => {
   dispatch(setLoading())
 

@@ -22,6 +22,10 @@ import Confirmation from './imports/ui/pages/Confirmation';
 import ThankYou from './imports/ui/pages/ThankYou';
 import About from './imports/ui/pages/About';
 import PrivateRoute from './imports/ui/components/common/PrivateRoute'
+import Forbidden from './imports/ui/pages/Forbidden';
+import Authorized from './imports/ui/components/common/Authorized';
+import AddProduct from './imports/ui/pages/AddProduct';
+import NewProduct from './imports/ui/pages/NewProduct';
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -58,10 +62,13 @@ function App() {
             <Route exact path="/products" component={Products} />
             <Route exact path="/products/:id" component={Product} />
             <Route exact path="/cart" component={Cart} />
-            <PrivateRoute exact path="/admin" component={Admin} />
+            <Authorized exact path="/admin" component={Admin} />
+            <Authorized exact path="/admin/products" component={AddProduct} />
+            <Authorized exact path="/admin/products/add" component={NewProduct} />
             <Route exact path="/about" component={About} />
             <Route exact path="/confirmation" component={Confirmation} />
             <Route exact path="/thank-you" component={ThankYou} />
+            <Route exact path="/forbidden" component={Forbidden} />
             <PrivateRoute exact path="/user/:id" component={Settings} />
             <Route path="*" component={NotFound}/>
           </Switch>

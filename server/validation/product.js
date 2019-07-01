@@ -9,7 +9,7 @@ module.exports = function validateProductInput(data){
     data.gross_price = !isEmpty(data.gross_price) ? data.gross_price : '';
     data.net_price = !isEmpty(data.net_price) ? data.net_price : '';
     data.initial_price = !isEmpty(data.initial_price) ? data.initial_price : '';
-    data.quantity = !isEmpty(data.quantity) ? data.quantity : '';
+    data.category = !isEmpty(data.category) ? data.category : '';
    
 
     if (!Validator.isLength(data.name, {min:3, max:30} )){
@@ -35,8 +35,9 @@ module.exports = function validateProductInput(data){
     if (Validator.isEmpty(data.initial_price)){
         errors.initial_price='Initial price field is required';
     }
-    if (Validator.isEmpty(data.quantity)){
-        errors.quantity='Quantity field is required';
+
+    if (Validator.isEmpty(data.category)){
+        errors.category='Category field is required';
     }
    
     return{
